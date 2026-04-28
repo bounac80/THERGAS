@@ -744,6 +744,7 @@ else:
 
 # 1. Affichage des résultats
 # Après l'exécution, dans la même section
+result.returncode = 0
 if result.returncode == 0:
     st.success("✅ Calcul terminé !")
     
