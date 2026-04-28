@@ -715,8 +715,7 @@ if st.button("🚀 Exécuter Thergas"):
                                 )
                         else:
                             st.error(f"Erreur : {result.stderr}")
-                            
-                except Exception as e:
+            except Exception as e:
                     st.error(f"Exception : {e}")
 
 
