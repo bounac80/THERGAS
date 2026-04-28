@@ -117,7 +117,7 @@ st.markdown("""
 
 st.image('Gemini_Generated_Image_ve3u4zve3u4zve3u.png',width=850)
 
-st.markdown('<h1 class="main-title">🧪 THERGAS )</h1>', unsafe_allow_html=True)
+st.markdown('<h1 class="main-title">🧪 THERGAS</h1>', unsafe_allow_html=True)
 st.markdown('<p class="sub-title">Nancy — LRGP, Université de Lorraine - Version Avril 2026<br>Suite du texte</p>', unsafe_allow_html=True)
 
 st.markdown("<hr style='height: 2px; background-color: #333;'>", unsafe_allow_html=True)
