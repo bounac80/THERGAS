@@ -581,17 +581,79 @@ st.write('')
 
 st.markdown("<hr style='height: 2px; background-color: #333;'>", unsafe_allow_html=True)
 
-# Le fichier sera créé, mais pas sauvegardé dans GitHub
-with open("molecule.txt", "w") as f:
-    f.write(nlf)
+# Configuration
+MOLECULE_FILE = "molecule.txt"
+RESULT_FILE = "Results_Thergas.txt"
 
-st.success("✅ Fichier molecule.txt créé (temporairement)")
+st.title("THERGAS - Calculs thermodynamiques")
 
-# Pour vérifier qu'il existe
-if os.path.exists("molecule.txt"):
-    st.info("Le fichier existe dans l'environnement d'exécution")
-    
-# Pour exécuter votre code Fortran après
-import subprocess
-result = subprocess.run(["./thergaslinux"], capture_output=True, text=True)
+# Interface utilisateur
+nlf = st.text_area("Contenu du fichier molecule.txt:", height=200)
+
+col1, col2 = st.columns(2)
+
+with col1:
+    if st.button("💾 Créer molecule.txt"):
+        if nlf:
+            with open(MOLECULE_FILE, "w") as f:
+                f.write(nlf)
+            st.success(f"✅ {MOLECULE_FILE} créé dans l'environnement temporaire")
+            
+            # Afficher le chemin
+            st.info(f"Chemin : {os.path.abspath(MOLECULE_FILE)}")
+        else:
+            st.warning("Veuillez entrer du contenu")
+
+with col2:
+    if st.button("🚀 Exécuter Thergas"):
+        if os.path.exists(MOLECULE_FILE):
+            with st.spinner("Calcul en cours..."):
+                try:
+                    # Vérifier que l'exécutable existe
+                    if not os.path.exists("./thergaslinux"):
+                        st.error("Exécutable thergaslinux introuvable")
+                    else:
+                        # Rendre exécutable
+                        os.chmod("./thergaslinux", 0o755)
+                        
+                        # Exécuter
+                        result = subprocess.run(
+                            ["./thergaslinux"],
+                            capture_output=True,
+                            text=True,
+                            timeout=60
+                        )
+                        
+                        if result.returncode == 0:
+                            st.success("Calcul terminé !")
+                            
+                            # Lire les résultats
+                            if os.path.exists(RESULT_FILE):
+                                with open(RESULT_FILE, "r") as f:
+                                    st.download_button(
+                                        "📥 Télécharger résultats",
+                                        f.read(),
+                                        RESULT_FILE
+                                    )
+                        else:
+                            st.error(f"Erreur : {result.stderr}")
+                            
+                except Exception as e:
+                    st.error(f"Exception : {e}")
+        else:
+            st.error(f"{MOLECULE_FILE} n'existe pas. Créez-le d'abord.")
+
+# Vérification des fichiers existants
+st.divider()
+st.subheader("📁 État des fichiers")
+
+if os.path.exists(MOLECULE_FILE):
+    st.success(f"✓ {MOLECULE_FILE} présent")
+else:
+    st.warning(f"✗ {MOLECULE_FILE} absent")
+
+if os.path.exists(RESULT_FILE):
+    st.success(f"✓ {RESULT_FILE} présent")
+else:
+    st.info(f"✗ {RESULT_FILE} absent (sera créé par Thergas)")
 
