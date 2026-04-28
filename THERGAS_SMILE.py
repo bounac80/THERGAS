@@ -7,6 +7,7 @@
 # Roda - Version du 28 avril 2026
 #
 
+
 # Correction sur les polycyles, les métagroupes
 # Ajout des conversions SMILES -> NLF et NLF-> SMILES
 #
