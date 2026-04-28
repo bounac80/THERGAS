@@ -573,68 +573,25 @@ nlf = re.sub(r"s\(//o\)\(//o\)",   "'so2'", nlf)
 st.markdown(f"Thergas notation: ``{nlf}``")
 st.write('')
 
+# ═══════════════════════════════════════════════════════════════════════
+# ═══════════════════════════════════════════════════════════════════════
+#  Lancement du code THERGAS
+# ═══════════════════════════════════════════════════════════════════════
+# ═══════════════════════════════════════════════════════════════════════
+
 st.markdown("<hr style='height: 2px; background-color: #333;'>", unsafe_allow_html=True)
 
-# Création du fichier molécule.txt par défaut pour le code thergas
-with open("molecule.txt", "w") as fichier:
-    fichier.write(nlf)
+# Le fichier sera créé, mais pas sauvegardé dans GitHub
+with open("molecule.txt", "w") as f:
+    f.write(nlf)
 
-# Exécution du code externe
-if st.button("Lancer le calcul Thergas"):
-    try:
-        # Vérifier que le fichier molecule.txt existe
-        if not os.path.exists("molecule.txt"):
-            st.error("❌ Le fichier molecule.txt n'existe pas. Veuillez d'abord le créer.")
-        else:
-            # Vérifier que l'exécutable existe
-            if not os.path.exists("./thergaslinux"):
-                st.error("❌ L'exécutable 'thergaslinux' est introuvable.")
-            else:
-                # Rendre l'exécutable accessible (si nécessaire)
-                os.chmod("./thergaslinux", 0o755)
-                
-                # Méthode 1 : Exécution simple
-                with st.spinner("⏳ Exécution de Thergas en cours..."):
-                    result = subprocess.run(
-                        ["./thergaslinux"],
-                        capture_output=True,
-                        text=True,
-                        check=False  # Ne pas lever d'exception immédiatement
-                    )
-                
-                # Vérifier le résultat
-                if result.returncode == 0:
-                    st.success("✅ Calcul Thergas terminé avec succès !")
-                    
-                    # Vérifier que le fichier résultat a été créé
-                    if os.path.exists("Results_Thergas.txt"):
-                        st.info("📄 Fichier Results_Thergas.txt généré")
-                        
-                        # Afficher les premières lignes du résultat
-                        with open("Results_Thergas.txt", "r") as f:
-                            contenu = f.read()
-                            st.text_area("Aperçu des résultats :", contenu, height=300)
-                        
-                        # Bouton pour télécharger le résultat
-                        with open("Results_Thergas.txt", "r") as f:
-                            st.download_button(
-                                label="📥 Télécharger Results_Thergas.txt",
-                                data=f,
-                                file_name="Results_Thergas.txt",
-                                mime="text/plain"
-                            )
-                    else:
-                        st.warning("⚠️ Le fichier Results_Thergas.txt n'a pas été généré.")
-                    
-                    # Afficher la sortie standard (optionnel)
-                    if result.stdout:
-                        st.text("Sortie standard :")
-                        st.code(result.stdout)
-                        
-                else:
-                    st.error(f"❌ Erreur lors de l'exécution (code {result.returncode})")
-                    if result.stderr:
-                        st.error(f"Message d'erreur :\n{result.stderr}")
-                        
-    except Exception as e:
-        st.error(f"❌ Exception : {str(e)}")
+st.success("✅ Fichier molecule.txt créé (temporairement)")
+
+# Pour vérifier qu'il existe
+if os.path.exists("molecule.txt"):
+    st.info("Le fichier existe dans l'environnement d'exécution")
+    
+# Pour exécuter votre code Fortran après
+import subprocess
+result = subprocess.run(["./thergaslinux"], capture_output=True, text=True)
+
