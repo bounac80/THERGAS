@@ -1,3 +1,1 @@
 libxrender1
-#libgfortran3
-#gfortran
