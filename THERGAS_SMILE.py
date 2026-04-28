@@ -859,4 +859,4 @@ if toto == 0:
         
         # Afficher les courbes
         st.subheader("📈 Propriétés thermodynamiques adimensionnelles")
-        afficher_resultats_thermodynamiques()  # ou afficher_courbes_simples()
+        afficher_courbes_simples()  # ou afficher_courbes_simples()
