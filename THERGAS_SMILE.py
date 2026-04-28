@@ -744,8 +744,10 @@ else:
 
 # 1. Affichage des résultats
 # Après l'exécution, dans la même section
-result.returncode = 0
-if result.returncode == 0:
+
+toto = 0
+##toto = result.returncod
+if toto == 0:
     st.success("✅ Calcul terminé !")
     
     if os.path.exists(RESULT_FILE):
@@ -847,7 +849,7 @@ def afficher_courbes_simples():
     st.pyplot(fig)
     plt.close(fig)
 
-if result.returncode == 0:
+if toto == 0:
     st.success("✅ Calcul terminé !")
     
     if os.path.exists(RESULT_FILE):
