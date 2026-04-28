@@ -735,3 +735,125 @@ if os.path.exists(RESULT_FILE):
     st.success(f"✓ {RESULT_FILE} présent")
 else:
     st.info(f"✗ {RESULT_FILE} absent (sera créé par Thergas)")
+
+# ═══════════════════════════════════════════════════════════════════════
+# ═══════════════════════════════════════════════════════════════════════
+#  Traitement du fichier résultat avec affichage + courbes + polynome nasa
+# ═══════════════════════════════════════════════════════════════════════
+# ═══════════════════════════════════════════════════════════════════════
+
+# 1. Affichage des résultats
+# Après l'exécution, dans la même section
+if result.returncode == 0:
+    st.success("✅ Calcul terminé !")
+    
+    if os.path.exists(RESULT_FILE):
+        # Lire le fichier
+        with open(RESULT_FILE, "r") as f:
+            contenu = f.read()
+        
+        # Section des résultats
+        st.subheader("📊 Résultats")
+        
+        # Option 1: Affichage dans un expander
+        with st.expander("Voir les résultats détaillés", expanded=True):
+            st.code(contenu, language="text")
+        
+        # Option 2: Téléchargement
+        st.download_button(
+            "📥 Télécharger",
+            contenu,
+            RESULT_FILE,
+            key="download"
+        )
+        
+        # Option 3: Aperçu des premières lignes
+        lines = contenu.split('\n')
+        st.write(f"**Aperçu (premières lignes) :**")
+        for i, line in enumerate(lines[:10]):
+            st.text(line)
+        if len(lines) > 10:
+            st.info(f"... et {len(lines) - 10} lignes supplémentaires")
+
+# 2. Graphs des résultats
+R = 1.987  # cal/(mol.K)
+
+def afficher_courbes_simples():
+    """Version simplifiée avec juste les trois courbes"""
+    
+    RESULT_FILE = "Results_Thergas.txt"
+    
+    if not os.path.exists(RESULT_FILE):
+        st.warning("Aucun résultat disponible")
+        return
+    
+    # Lecture directe du fichier
+    with open(RESULT_FILE, "r") as f:
+        lignes = f.readlines()
+    
+    # Extraction des données
+    temperatures = []
+    cp_values = []
+    h_values = []
+    s_values = []
+    
+    lecture_tableau = False
+    for ligne in lignes:
+        if 'Methode de Benson' in ligne:
+            lecture_tableau = True
+            continue
+        if lecture_tableau and ligne.strip() and not ligne.startswith('-'):
+            parts = ligne.split()
+            if len(parts) >= 4 and parts[0].replace('.', '').isdigit():
+                try:
+                    T = float(parts[0])
+                    Cp = float(parts[1])
+                    H = float(parts[2])
+                    S = float(parts[3])
+                    temperatures.append(T)
+                    cp_values.append(Cp / R)
+                    h_values.append((H * 1000) / (R * T))
+                    s_values.append(S / R)
+                except:
+                    pass
+    
+    if not temperatures:
+        st.error("Impossible de lire les données")
+        return
+    
+    # Création des graphiques côte à côte
+    fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(15, 5))
+    
+    ax1.plot(temperatures, cp_values, 'b-o', markersize=4)
+    ax1.set_xlabel('T (K)')
+    ax1.set_ylabel('Cp/R')
+    ax1.set_title('Cp/R = f(T)')
+    ax1.grid(True, alpha=0.3)
+    
+    ax2.plot(temperatures, h_values, 'r-s', markersize=4)
+    ax2.set_xlabel('T (K)')
+    ax2.set_ylabel('H/RT')
+    ax2.set_title('H/RT = f(T)')
+    ax2.grid(True, alpha=0.3)
+    
+    ax3.plot(temperatures, s_values, 'g-^', markersize=4)
+    ax3.set_xlabel('T (K)')
+    ax3.set_ylabel('S/R')
+    ax3.set_title('S/R = f(T)')
+    ax3.grid(True, alpha=0.3)
+    
+    plt.tight_layout()
+    st.pyplot(fig)
+    plt.close(fig)
+
+if result.returncode == 0:
+    st.success("✅ Calcul terminé !")
+    
+    if os.path.exists(RESULT_FILE):
+        # Afficher les résultats bruts
+        with open(RESULT_FILE, "r") as f:
+            st.download_button("📥 Télécharger", f.read(), RESULT_FILE)
+        
+        # Afficher les courbes
+        st.subheader("📈 Propriétés thermodynamiques adimensionnelles")
+        afficher_resultats_thermodynamiques()  # ou afficher_courbes_simples()
