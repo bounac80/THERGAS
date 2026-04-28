@@ -687,13 +687,13 @@ if st.button("🚀 Exécuter Thergas"):
     if os.path.exists(MOLECULE_FILE):
         with st.spinner("Calcul en cours..."):
             try:
-            # Vérifier que l'exécutable existe
+                # Vérifier que l'exécutable existe
                 if not os.path.exists("./thergaslinux"):
                     st.error("Exécutable thergaslinux introuvable")
                 else:
                     # Rendre exécutable
                     os.chmod("./thergaslinux", 0o755)
-                        
+                    
                     # Exécuter
                     result = subprocess.run(
                         ["./thergaslinux"],
@@ -701,10 +701,10 @@ if st.button("🚀 Exécuter Thergas"):
                         text=True,
                         timeout=60
                     )
-                        
+                    
                     if result.returncode == 0:
                         st.success("Calcul terminé !")
-                            
+                        
                         # Lire les résultats
                         if os.path.exists(RESULT_FILE):
                             with open(RESULT_FILE, "r") as f:
@@ -713,10 +713,13 @@ if st.button("🚀 Exécuter Thergas"):
                                     f.read(),
                                     RESULT_FILE
                                 )
-                        else:
-                            st.error(f"Erreur : {result.stderr}")
+                    else:
+                        st.error(f"Erreur : {result.stderr}")
+                        
             except Exception as e:
-                    st.error(f"Exception : {e}")
+                st.error(f"Exception : {e}")
+    else:
+        st.error(f"{MOLECULE_FILE} n'existe pas")
 
 
 # Vérification des fichiers existants
