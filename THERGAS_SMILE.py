@@ -851,8 +851,8 @@ if result.returncode == 0:
     
     if os.path.exists(RESULT_FILE):
         # Afficher les résultats bruts
-        with open(RESULT_FILE, "r") as f:
-            st.download_button("📥 Télécharger", f.read(), RESULT_FILE)
+        #with open(RESULT_FILE, "r") as f:
+        #    st.download_button("📥 Télécharger", f.read(), RESULT_FILE)
         
         # Afficher les courbes
         st.subheader("📈 Propriétés thermodynamiques adimensionnelles")
