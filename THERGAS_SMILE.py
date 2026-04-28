@@ -683,7 +683,7 @@ st.success(f"✅ {MOLECULE_FILE} créé dans l'environnement temporaire")
 # Afficher le chemin
 st.info(f"Chemin : {os.path.abspath(MOLECULE_FILE)}")
 
-if st.button("🚀 Exécuter Thergas"):
+if st.button("🚀 Exécuter Thergas 2"):
     if os.path.exists(MOLECULE_FILE):
         with st.spinner("Calcul en cours..."):
             try:
