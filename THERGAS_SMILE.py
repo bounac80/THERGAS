@@ -684,41 +684,40 @@ st.success(f"✅ {MOLECULE_FILE} créé dans l'environnement temporaire")
 st.info(f"Chemin : {os.path.abspath(MOLECULE_FILE)}")
 
 if st.button("🚀 Exécuter Thergas"):
-        if os.path.exists(MOLECULE_FILE):
-            with st.spinner("Calcul en cours..."):
-                try:
-                    # Vérifier que l'exécutable existe
-                    if not os.path.exists("./thergaslinux"):
-                        st.error("Exécutable thergaslinux introuvable")
-                    else:
-                        # Rendre exécutable
-                        os.chmod("./thergaslinux", 0o755)
+    if os.path.exists(MOLECULE_FILE):
+        with st.spinner("Calcul en cours..."):
+            try:
+            # Vérifier que l'exécutable existe
+                if not os.path.exists("./thergaslinux"):
+                    st.error("Exécutable thergaslinux introuvable")
+                else:
+                    # Rendre exécutable
+                    os.chmod("./thergaslinux", 0o755)
                         
-                        # Exécuter
-                        result = subprocess.run(
-                            ["./thergaslinux"],
-                            capture_output=True,
-                            text=True,
-                            timeout=60
-                        )
+                    # Exécuter
+                    result = subprocess.run(
+                        ["./thergaslinux"],
+                        capture_output=True,
+                        text=True,
+                        timeout=60
+                    )
                         
-                        if result.returncode == 0:
-                            st.success("Calcul terminé !")
+                    if result.returncode == 0:
+                        st.success("Calcul terminé !")
                             
-                            # Lire les résultats
-                            if os.path.exists(RESULT_FILE):
-                                with open(RESULT_FILE, "r") as f:
-                                    st.download_button(
-                                        "📥 Télécharger résultats",
-                                        f.read(),
-                                        RESULT_FILE
-                                    )
+                        # Lire les résultats
+                        if os.path.exists(RESULT_FILE):
+                            with open(RESULT_FILE, "r") as f:
+                                st.download_button(
+                                    "📥 Télécharger résultats",
+                                    f.read(),
+                                    RESULT_FILE
+                                )
                         else:
                             st.error(f"Erreur : {result.stderr}")
                             
                 except Exception as e:
                     st.error(f"Exception : {e}")
-
 
 
 # Vérification des fichiers existants
