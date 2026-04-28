@@ -573,9 +573,13 @@ nlf = re.sub(r"s\(//o\)\(//o\)",   "'so2'", nlf)
 st.markdown(f"Thergas notation: ``{nlf}``")
 st.write('')
 
+# pour l'instant
+molecule_thergas = nlf 
+
+
 # ═══════════════════════════════════════════════════════════════════════
 # ═══════════════════════════════════════════════════════════════════════
-#  Lancement du code THERGAS
+#  Lancement du code THERGAS - Version 1
 # ═══════════════════════════════════════════════════════════════════════
 # ═══════════════════════════════════════════════════════════════════════
 
@@ -657,3 +661,76 @@ if os.path.exists(RESULT_FILE):
 else:
     st.info(f"✗ {RESULT_FILE} absent (sera créé par Thergas)")
 
+# ═══════════════════════════════════════════════════════════════════════
+# ═══════════════════════════════════════════════════════════════════════
+#  Lancement du code THERGAS - Version 2
+# ═══════════════════════════════════════════════════════════════════════
+# ═══════════════════════════════════════════════════════════════════════
+
+st.markdown("<hr style='height: 2px; background-color: #333;'>", unsafe_allow_html=True)
+
+# Configuration
+MOLECULE_FILE = "molecule.txt"
+RESULT_FILE = "Results_Thergas.txt"
+
+st.title("THERGAS - Calculs thermodynamiques")
+
+with open(MOLECULE_FILE, "w") as f:
+    f.write(molecule_thergas)
+
+st.success(f"✅ {MOLECULE_FILE} créé dans l'environnement temporaire")
+
+# Afficher le chemin
+st.info(f"Chemin : {os.path.abspath(MOLECULE_FILE)}")
+
+if st.button("🚀 Exécuter Thergas"):
+        if os.path.exists(MOLECULE_FILE):
+            with st.spinner("Calcul en cours..."):
+                try:
+                    # Vérifier que l'exécutable existe
+                    if not os.path.exists("./thergaslinux"):
+                        st.error("Exécutable thergaslinux introuvable")
+                    else:
+                        # Rendre exécutable
+                        os.chmod("./thergaslinux", 0o755)
+                        
+                        # Exécuter
+                        result = subprocess.run(
+                            ["./thergaslinux"],
+                            capture_output=True,
+                            text=True,
+                            timeout=60
+                        )
+                        
+                        if result.returncode == 0:
+                            st.success("Calcul terminé !")
+                            
+                            # Lire les résultats
+                            if os.path.exists(RESULT_FILE):
+                                with open(RESULT_FILE, "r") as f:
+                                    st.download_button(
+                                        "📥 Télécharger résultats",
+                                        f.read(),
+                                        RESULT_FILE
+                                    )
+                        else:
+                            st.error(f"Erreur : {result.stderr}")
+                            
+                except Exception as e:
+                    st.error(f"Exception : {e}")
+
+
+
+# Vérification des fichiers existants
+st.divider()
+st.subheader("📁 État des fichiers")
+
+if os.path.exists(MOLECULE_FILE):
+    st.success(f"✓ {MOLECULE_FILE} présent")
+else:
+    st.warning(f"✗ {MOLECULE_FILE} absent")
+
+if os.path.exists(RESULT_FILE):
+    st.success(f"✓ {RESULT_FILE} présent")
+else:
+    st.info(f"✗ {RESULT_FILE} absent (sera créé par Thergas)")
