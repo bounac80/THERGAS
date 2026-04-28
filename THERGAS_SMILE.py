@@ -14,9 +14,9 @@
 
 #!/usr/bin/env python3
 """
-Convertisseur bidirectionnel SMILES ↔ NLF (Nancy Linear Form)
+Code THERGAS
 =================================================================
-Règles :  Côme & Muller (1984) · Blurock et al. (2012) · Rapport LRGP
+Roda - LRGP - Avril 2026
 """
 
 #
@@ -59,7 +59,7 @@ import os
 # ═══════════════════════════════════════════════════════════════════════
 
 st.set_page_config(
-    page_title="Convertisseur SMILES ↔ NLF",
+    page_title="THERGAS",
     page_icon="🧪",
     #layout="wide",
 )
