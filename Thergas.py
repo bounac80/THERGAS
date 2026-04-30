@@ -357,7 +357,9 @@ else:
 # ═══════════════════════════════════════════════════════════════════════
 # ═══════════════════════════════════════════════════════════════════════
 
-
+#st.subheader("📈 Dimensionless thermodynamic properties")
+st.subheader(f"📈 NASA Coefficients for {SMILES_Molecules}:")
+st.write(f"✅ For the low temperature range:")
 #
 # On fixe les valeurs de H et S à 298 K !! Attention pour l'isntant je n'ai pas de méthode pour estimer ces valeurs automatiquement !!
 #
@@ -398,7 +400,7 @@ nasa_coefficients_HT = [0,0,0,0,0,0,0]
 
 nasa_coefficients = np.concatenate((nasa_coefficients_HT, nasa_coefficients_LT))
 #                                             
-st.write(f"✅ NASA Coefficients for {SMILES_Molecules}:")
+#st.write(f"✅ NASA Coefficients for {SMILES_Molecules}:")
 #st.write(f"  ⚠️ Keep in mind that for the moment Hf(298K) and S(298K) are equal to zero !!")
 
 #labels = ['a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8', 'a9', 'a10', 'a11', 'a12', 'a13', 'a14']
@@ -409,13 +411,13 @@ col1, col2 = st.columns(2)
 labels_HT = ['a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7']
 labels_LT = ['a8', 'a9', 'a10', 'a11', 'a12', 'a13', 'a14']
 
-with col1:
-    for lab, val in zip(labels_HT, nasa_coefficients_HT):
-        st.write(f"   {lab:3s} = {val:12.6e}")
+#with col1:
+#    for lab, val in zip(labels_HT, nasa_coefficients_HT):
+#        st.write(f"   {lab:3s} = {val:12.6e}")
     
-with col2:
-    for lab, val in zip(labels_LT, nasa_coefficients_LT):
-        st.write(f"   {lab:3s} = {val:12.6e}")
+#with col2:
+#    for lab, val in zip(labels_LT, nasa_coefficients_LT):
+#        st.write(f"   {lab:3s} = {val:12.6e}")
 
 #
 # Ecriture du Polynome Nasa
