@@ -2,6 +2,6 @@ matplotlib
 #mordred
 rdkit
 #joblib
-#scikit-learn
+scikit-learn
 plotly.express
 streamlit_ketcher
