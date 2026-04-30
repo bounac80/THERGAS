@@ -394,7 +394,7 @@ nasa_coefficients_LT = get_nasa_coefficients( 298.15 , temperatures , h298 = h29
 #
 #nasa_coefficients_HT = get_nasa_coefficients( Tmed , temperatures[mask_high] , h298 = h_RT_Tmed , s298 = s_R_Tmed , cp_values = cp_values[mask_high] ) 
 #
-nasa_coefficients_HT = 0
+nasa_coefficients_HT = [0,0,0,0,0,0,0]
 
 nasa_coefficients = np.concatenate((nasa_coefficients_HT, nasa_coefficients_LT))
 #                                             
