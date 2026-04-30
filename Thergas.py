@@ -319,7 +319,6 @@ for ligne in lignes:
 
 if not temperatures:
     st.error("Error: It is impossible to perform the calculation using Benson's method")
-    continue
 else:
     # Tracer
     fig, axes = plt.subplots(3, 1, figsize=(12, 10), sharex=True)
