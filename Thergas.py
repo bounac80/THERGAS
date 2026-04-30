@@ -361,7 +361,7 @@ else:
 #
 # On fixe les valeurs de H et S à 298 K !! Attention pour l'isntant je n'ai pas de méthode pour estimer ces valeurs automatiquement !!
 #
-#cp_values    = y_pred.to_numpy()
+cp_values    = cp_values.to_numpy()
 #temperatures = df_filtered_ia["T(K)"].to_numpy()
 #
 Tmin = 290 ; Tmed = 1500 ; Tmax = 5000
