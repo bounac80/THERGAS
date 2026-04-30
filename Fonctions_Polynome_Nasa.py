@@ -209,7 +209,7 @@ def plot_nasa_validation_New(smile, coeffs, Tmin, Tmed, Tmax):
     axes[2].legend()
     axes[2].grid(True)
 
-    plt.xlim(300, 1500)
+    plt.xlim(250, 1450)
     plt.tight_layout()
     plt.show()
     st.pyplot(plt)
