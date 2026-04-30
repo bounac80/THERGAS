@@ -127,7 +127,7 @@ st.image('B2.png',width=850)
 
 st.markdown('<h1 class="main-title">THERGAS</h1>', unsafe_allow_html=True)
 st.subheader('A computer program for the evaluation of thermochemical data of molecules and free radicals in the gas phase')
-st.subheader('The calculations are based on the methods developedS.W. Benson: bond and group additivity')
+st.subheader('The calculations are based on the methods developed by S.W. Benson: bond and group additivity')
 
 st.markdown("***LRGP - Université de Lorraine, CNRS, LRGP, F-54000 Nancy, France***")
 st.write("----------------------------------------------------------")
