@@ -430,5 +430,5 @@ chemkin_data = get_chemkin_file(name=names, smiles=smiles, method='Method of Ben
 #
 st.code(chemkin_data)
 #
-plot_nasa_validation_New(smiles, nasa_coefficients, Tmin=290, Tmed=1500, Tmax=5000)
+plot_nasa_validation_New(smiles, nasa_coefficients, Tmin=290, Tmed=1500, Tmax=1500)
 #
