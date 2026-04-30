@@ -358,8 +358,8 @@ else:
 # ═══════════════════════════════════════════════════════════════════════
 
 #st.subheader("📈 Dimensionless thermodynamic properties")
-st.subheader(f"📈 NASA Coefficients:")
-st.write(f"✅ For the low temperature range:")
+st.subheader(f"📈 NASA Coefficients")
+st.write(f"✅ For the low temperature range")
 #
 # On fixe les valeurs de H et S à 298 K !! Attention pour l'isntant je n'ai pas de méthode pour estimer ces valeurs automatiquement !!
 #
