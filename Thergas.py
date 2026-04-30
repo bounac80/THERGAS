@@ -126,7 +126,7 @@ st.markdown("""
 st.image('B2.png',width=850)
 
 st.markdown('<h1 class="main-title">THERGAS</h1>', unsafe_allow_html=True)
-st.subheader('A computer program for the evaluation of thermochemdata of molecules and free radicals in the gas phase')
+st.subheader('A computer program for the evaluation of thermochemical data of molecules and free radicals in the gas phase')
 st.subheader('The calculations are based on the methods developedS.W. Benson: bond and group additivity')
 
 st.markdown("***LRGP - Université de Lorraine, CNRS, LRGP, F-54000 Nancy, France***")
@@ -189,6 +189,8 @@ RESULT_FILE = "Results_Thergas.txt"
 
 st.subheader("-- THERGAS --")
 
+resultat_ok = 0
+
 with open(MOLECULE_FILE, "w") as f:
     f.write(molecule_thergas)
 
@@ -218,7 +220,7 @@ if st.button("➡️ Launch the calculation"):
                     
                     if result.returncode == 0:
                         st.success("Calculation complete !")
-                        
+                        resultat_ok = 1
                         # Lire les résultats
                         #if os.path.exists(RESULT_FILE):
                         #    with open(RESULT_FILE, "r") as f:
@@ -244,10 +246,7 @@ if st.button("➡️ Launch the calculation"):
 # 1. Affichage des résultats
 # Après l'exécution, dans la même section
 
-#toto = 0
-##toto = result.returncod
-
-if result.returncod == 0:
+if resultat_ok == 1:
     #st.success("✅ Calcul terminé !")
     
     if os.path.exists(RESULT_FILE):
