@@ -51,7 +51,7 @@ import os
 
 from Fonctions_SMILES import * # Importation des fonctions pour la conversion smiles <->nlf
 #from Fonctions_DIPPR import * # Importation des fonctions pour fitting DIPPR
-#from Fonctions_Polynome_Nasa import * # Importation des fonctions pour le polynome Nasa
+from Fonctions_Polynome_Nasa import * # Importation des fonctions pour le polynome Nasa
 
 # ═══════════════════════════════════════════════════════════════════════
 # ═══════════════════════════════════════════════════════════════════════
@@ -356,3 +356,79 @@ else:
 #  Polynomes NASA
 # ═══════════════════════════════════════════════════════════════════════
 # ═══════════════════════════════════════════════════════════════════════
+
+
+#
+# On fixe les valeurs de H et S à 298 K !! Attention pour l'isntant je n'ai pas de méthode pour estimer ces valeurs automatiquement !!
+#
+#cp_values    = y_pred.to_numpy()
+#temperatures = df_filtered_ia["T(K)"].to_numpy()
+#
+Tmin = 290 ; Tmed = 1500 ; Tmax = 5000
+#
+#mask_low = (temperatures <= Tmed) & (temperatures > 290)
+#mask_high = temperatures >= Tmed
+#
+# Step 1 - On fixe les valeurs de H et S à 298 K
+#
+h298_RT = h_values[0] #0.0 # -10.33501615 ########################################################
+s298_R = s_values[0] #0.0 # 74.11268     ########################################################
+#
+# Step 2 - On calul les valeurs H/RT et S/R - R dépends de l'unité de H et S
+#
+#Cst_R = 1.987 # si calorie
+#Cst_R = 8.31446261815324 # si Joule
+#
+#h298_RT = h298 / Cst_R / 298.15
+#s298_R = s298 / Cst_R
+#
+# Polynome BT
+#
+nasa_coefficients_LT = get_nasa_coefficients( 298.15 , temperatures , h298 = h298_RT , s298 = s298_R , cp_values = cp_values )
+#
+# Polynome HT
+#
+#h_RT_Tmed = enthalpy_fit(Tmed,nasa_coefficients_LT[0],nasa_coefficients_LT[1],nasa_coefficients_LT[2],nasa_coefficients_LT[3],nasa_coefficients_LT[4],nasa_coefficients_LT[5])
+#
+#s_R_Tmed = entropy_fit(Tmed,nasa_coefficients_LT[0],nasa_coefficients_LT[1],nasa_coefficients_LT[2],nasa_coefficients_LT[3],nasa_coefficients_LT[4],nasa_coefficients_LT[6])
+#
+#nasa_coefficients_HT = get_nasa_coefficients( Tmed , temperatures[mask_high] , h298 = h_RT_Tmed , s298 = s_R_Tmed , cp_values = cp_values[mask_high] ) 
+#
+nasa_coefficients_HT = 0
+
+nasa_coefficients = np.concatenate((nasa_coefficients_HT, nasa_coefficients_LT))
+#                                             
+st.write(f"✅ NASA Coefficients for {SMILES_Molecules}:")
+#st.write(f"  ⚠️ Keep in mind that for the moment Hf(298K) and S(298K) are equal to zero !!")
+
+#labels = ['a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8', 'a9', 'a10', 'a11', 'a12', 'a13', 'a14']
+#for lab, val in zip(labels, nasa_coefficients):
+#    st.write(f"   {lab:3s} = {val:12.6e}")
+
+col1, col2 = st.columns(2)
+labels_HT = ['a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7']
+labels_LT = ['a8', 'a9', 'a10', 'a11', 'a12', 'a13', 'a14']
+
+with col1:
+    for lab, val in zip(labels_HT, nasa_coefficients_HT):
+        st.write(f"   {lab:3s} = {val:12.6e}")
+    
+with col2:
+    for lab, val in zip(labels_LT, nasa_coefficients_LT):
+        st.write(f"   {lab:3s} = {val:12.6e}")
+
+#
+# Ecriture du Polynome Nasa
+#
+names = 'LRGP - Nancy, France'
+#
+smiles = SMILES_Molecules
+#
+mols = Chem.MolFromSmiles(SMILES_Molecules)
+#
+chemkin_data = get_chemkin_file(name=names, smiles=smiles, method='Method of Benson', mol=mols, nasa_coefficients=nasa_coefficients)
+#
+st.code(chemkin_data)
+#
+plot_nasa_validation_New(smile, nasa_coefficients, Tmin=290, Tmed=1500, Tmax=5000)
+#
