@@ -113,7 +113,7 @@ def get_chemkin_file(name: str,
     
     for i in range(4 - num_types):
         chemkin += "     "
-    chemkin += "G   200.00    5000.00   1500.00    1\n"
+    chemkin += "G   300.00    5000.00   1500.00    1\n"
     
     for i in range(5):
         formatted_coefficient = format_array(np.array(nasa_coefficients[i]))
@@ -290,7 +290,8 @@ def plot_nasa_validation(smile, coeffs, Tmin=290, Tmed=1500, Tmax=5000):
     axes[2].set_ylabel('S/R')
     axes[2].set_xlabel('Température (K)')
     axes[2].grid(True)
-    
+
+    plt.xlim(300, 1500)
     plt.tight_layout()
     plt.show()
     
