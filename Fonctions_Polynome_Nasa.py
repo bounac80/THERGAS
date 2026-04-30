@@ -208,7 +208,8 @@ def plot_nasa_validation_New(smile, coeffs, Tmin, Tmed, Tmax):
     axes[2].set_xlabel('Temperature (K)')
     axes[2].legend()
     axes[2].grid(True)
-    
+
+    plt.xlim(300, 1500)
     plt.tight_layout()
     plt.show()
     st.pyplot(plt)
@@ -291,7 +292,6 @@ def plot_nasa_validation(smile, coeffs, Tmin=290, Tmed=1500, Tmax=5000):
     axes[2].set_xlabel('Température (K)')
     axes[2].grid(True)
 
-    plt.xlim(300, 1500)
     plt.tight_layout()
     plt.show()
     
