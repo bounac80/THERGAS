@@ -1,2 +1,0 @@
-smiles zi
-CCCCO 1.0
