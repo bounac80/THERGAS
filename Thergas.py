@@ -407,7 +407,7 @@ nasa_coefficients_LT = get_nasa_coefficients( 298.15 , temperatures , h298 = h29
 #
 
 # Methode de Yuan&Mock pour le calcul des cp HT
-cpinf = ( 3. * nat - 2. ) * R
+cpinf = ( 3. * nat - 2. )
 s1 = 1. - cp_values[13] / cpinf # pour 1500 K
 s2 = 1. - cp_values[8] / cpinf  # pour 1000 K
 b  = ( -np.log(s1) + np.log(s2) ) / 500.0	
