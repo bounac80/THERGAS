@@ -433,6 +433,27 @@ cp_values[6] = cpinf * ( 1. - np.exp ( - ( q + b * temperatures[6] ) ) )
 cp_values[7] = cpinf * ( 1. - np.exp ( - ( q + b * temperatures[7] ) ) )
 cp_values[8] = cpinf * ( 1. - np.exp ( - ( q + b * temperatures[8] ) ) )
 
+st.write(temperatures[0])
+st.write(temperatures[1])
+st.write(temperatures[2])
+st.write(temperatures[3])
+st.write(temperatures[4])
+st.write(temperatures[5])
+st.write(temperatures[6])
+st.write(temperatures[7])
+st.write(temperatures[8])
+
+st.write(cp_values[0])
+st.write(cp_values[1])
+st.write(cp_values[2])
+st.write(cp_values[3])
+st.write(cp_values[4])
+st.write(cp_values[5])
+st.write(cp_values[6])
+st.write(cp_values[7])
+st.write(cp_values[8])
+
+
 h_RT_Tmed = enthalpy_fit(Tmed,nasa_coefficients_LT[0],nasa_coefficients_LT[1],nasa_coefficients_LT[2],nasa_coefficients_LT[3],nasa_coefficients_LT[4],nasa_coefficients_LT[5])
 #
 s_R_Tmed = entropy_fit(Tmed,nasa_coefficients_LT[0],nasa_coefficients_LT[1],nasa_coefficients_LT[2],nasa_coefficients_LT[3],nasa_coefficients_LT[4],nasa_coefficients_LT[6])
