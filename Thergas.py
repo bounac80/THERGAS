@@ -296,6 +296,19 @@ s_values = []
 
 lecture_tableau = False
 for ligne in lignes:
+    
+    # Lecture du nombre d'atome pour la methode de Yuan et Mock
+    if "NAT:" in ligne:
+            # On coupe la ligne au niveau du ":"
+            parties = ligne.split(":")
+            
+            # parties[1] contient "          26\n"
+            # .strip() enlève les espaces et les sauts de ligne
+            valeur_texte = parties[1].strip() 
+            
+            # On convertit le texte en nombre entier
+            nat = int(valeur_texte)
+            
     if 'BENSON method' in ligne:
         lecture_tableau = True
         continue
@@ -383,20 +396,50 @@ s298_R = s_values[0] #0.0 # 74.11268     #######################################
 #
 #h298_RT = h298 / Cst_R / 298.15
 #s298_R = s298 / Cst_R
+
 #
 # Polynome BT
 #
+
 nasa_coefficients_LT = get_nasa_coefficients( 298.15 , temperatures , h298 = h298_RT , s298 = s298_R , cp_values = cp_values )
 #
 # Polynome HT
 #
-#h_RT_Tmed = enthalpy_fit(Tmed,nasa_coefficients_LT[0],nasa_coefficients_LT[1],nasa_coefficients_LT[2],nasa_coefficients_LT[3],nasa_coefficients_LT[4],nasa_coefficients_LT[5])
+
+# Methode de Yuan&Mock pour le calcul des cp HT
+cpinf = ( 3. * nat - 2. ) * R
+s1 = 1. - cp_values[10] / cpinf # pour 1500 K
+s2 = 1. - cp_values[7] / cpinf  # pour 1000 K
+b  = ( -np.log(s1) + np.log(s2) ) / 500.0	
+q  = -np.log(s2) - b * 1000.0
+
+temperatures[0] = 1000.0
+temperatures[1] = 1500.0
+temperatures[2] = 2000.0
+temperatures[3] = 2500.0
+temperatures[4] = 3000.0
+temperatures[5] = 3500.0
+temperatures[6] = 4000.0
+temperatures[7] = 4500.0
+temperatures[8] = 5000.0
+
+cp_values[0] = cp_values[7]
+cp_values[1] = cp_values[10]
+cp_values[2] = cpinf * ( 1. - np.exp ( - ( q + b * temperatures[2] ) ) )
+cp_values[3] = cpinf * ( 1. - np.exp ( - ( q + b * temperatures[3] ) ) )
+cp_values[4] = cpinf * ( 1. - np.exp ( - ( q + b * temperatures[4] ) ) )
+cp_values[5] = cpinf * ( 1. - np.exp ( - ( q + b * temperatures[5] ) ) )
+cp_values[6] = cpinf * ( 1. - np.exp ( - ( q + b * temperatures[6] ) ) )
+cp_values[7] = cpinf * ( 1. - np.exp ( - ( q + b * temperatures[7] ) ) )
+cp_values[8] = cpinf * ( 1. - np.exp ( - ( q + b * temperatures[8] ) ) )
+
+h_RT_Tmed = enthalpy_fit(Tmed,nasa_coefficients_LT[0],nasa_coefficients_LT[1],nasa_coefficients_LT[2],nasa_coefficients_LT[3],nasa_coefficients_LT[4],nasa_coefficients_LT[5])
 #
-#s_R_Tmed = entropy_fit(Tmed,nasa_coefficients_LT[0],nasa_coefficients_LT[1],nasa_coefficients_LT[2],nasa_coefficients_LT[3],nasa_coefficients_LT[4],nasa_coefficients_LT[6])
+s_R_Tmed = entropy_fit(Tmed,nasa_coefficients_LT[0],nasa_coefficients_LT[1],nasa_coefficients_LT[2],nasa_coefficients_LT[3],nasa_coefficients_LT[4],nasa_coefficients_LT[6])
 #
-#nasa_coefficients_HT = get_nasa_coefficients( Tmed , temperatures[mask_high] , h298 = h_RT_Tmed , s298 = s_R_Tmed , cp_values = cp_values[mask_high] ) 
+nasa_coefficients_HT = get_nasa_coefficients( Tmed , temperatures[:9] , h298 = h_RT_Tmed , s298 = s_R_Tmed , cp_values = cp_values[:9] ) 
 #
-nasa_coefficients_HT = [0,0,0,0,0,0,0]
+#nasa_coefficients_HT = [0,0,0,0,0,0,0]
 
 nasa_coefficients = np.concatenate((nasa_coefficients_HT, nasa_coefficients_LT))
 #                                             
@@ -432,5 +475,5 @@ chemkin_data = get_chemkin_file(name=names, smiles=smiles, method='Method of Ben
 #
 st.code(chemkin_data)
 #
-plot_nasa_validation_New(smiles, nasa_coefficients, Tmin=290, Tmed=1500, Tmax=1490)
+plot_nasa_validation_New(smiles, nasa_coefficients, Tmin=290, Tmed=1500, Tmax=5000)
 #
