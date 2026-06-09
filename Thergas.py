@@ -423,8 +423,8 @@ temperatures[6] = 4000.0
 temperatures[7] = 4500.0
 temperatures[8] = 5000.0
 
-cp_values[0] = cp_values[7]
-cp_values[1] = cp_values[10]
+cp_values[0] = cp_values[8]
+cp_values[1] = cp_values[13]
 cp_values[2] = cpinf * ( 1. - np.exp ( - ( q + b * temperatures[2] ) ) )
 cp_values[3] = cpinf * ( 1. - np.exp ( - ( q + b * temperatures[3] ) ) )
 cp_values[4] = cpinf * ( 1. - np.exp ( - ( q + b * temperatures[4] ) ) )
